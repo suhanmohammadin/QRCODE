@@ -13,6 +13,29 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
 
+  <!-- PIN Authentication Modal Overlay -->
+  <div id="pinAuthModal" class="fixed inset-0 bg-gray-900/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-sm w-full text-center space-y-4">
+      <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 002-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-gray-800">Authentication Required</h2>
+      <p class="text-xs text-gray-500">Please enter the security PIN to access the generator.</p>
+      
+      <form id="pinForm" onsubmit="return false;" class="space-y-3">
+        <input type="password" id="pinInput" placeholder="Enter 8-digit PIN" maxlength="8"
+          class="w-full text-center tracking-widest text-lg font-mono px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 outline-none transition" />
+        <p id="pinErrorMsg" class="text-xs text-red-500 hidden font-semibold">Incorrect PIN! Try again.</p>
+        <button type="button" id="submitPinBtn"
+          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg shadow transition">
+          Unlock App
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Header Banner -->
   <header class="text-center my-4 w-full max-w-xl bg-emerald-600 py-4 px-6 rounded-2xl shadow-md text-white">
     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">
@@ -77,8 +100,8 @@
     </form>
   </main>
 
-  <!-- Modal Pop-Up Container -->
-  <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+  <!-- Modal Pop-Up Container for QR Code -->
+  <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-40">
     <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full flex flex-col items-center relative animate-in fade-in zoom-in duration-200">
       
       <!-- Close Button -->
@@ -127,12 +150,63 @@
   </div>
 
   <!-- Copyright Footer -->
-  <footer class="text-center my-4 text-xs text-gray-500">
-    &copy; All rights reserved by SMGC PVT LTD
+  <footer class="text-center my-4 text-xs text-gray-500 space-y-1">
+    <div>&copy; All rights reserved by SMGC PVT LTD</div>
+    <button id="lockAppBtn" class="text-[10px] text-gray-400 hover:text-gray-600 underline cursor-pointer">Lock Application</button>
   </footer>
 
   <!-- Script Logic -->
   <script>
+    // --- PIN Verification Logic ---
+    const pinAuthModal = document.getElementById('pinAuthModal');
+    const pinInput = document.getElementById('pinInput');
+    const submitPinBtn = document.getElementById('submitPinBtn');
+    const pinErrorMsg = document.getElementById('pinErrorMsg');
+    const lockAppBtn = document.getElementById('lockAppBtn');
+
+    // Dynamically calculate PIN: Current date formatted as YYYYMMDD
+    function getTodayPin() {
+      const today = new Date();
+      const year = today.getFullYear().toString();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${year}${month}${day}`;
+    }
+
+    function checkAuth() {
+      if (localStorage.getItem('appUnlocked') === 'true') {
+        pinAuthModal.classList.add('hidden');
+      } else {
+        pinAuthModal.classList.remove('hidden');
+      }
+    }
+
+    function validatePin() {
+      const expectedPin = getTodayPin();
+      if (pinInput.value.trim() === expectedPin) {
+        localStorage.setItem('appUnlocked', 'true');
+        pinAuthModal.classList.add('hidden');
+        pinErrorMsg.classList.add('hidden');
+        pinInput.value = '';
+      } else {
+        pinErrorMsg.classList.remove('hidden');
+      }
+    }
+
+    submitPinBtn.addEventListener('click', validatePin);
+    pinInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') validatePin();
+    });
+
+    lockAppBtn.addEventListener('click', () => {
+      localStorage.removeItem('appUnlocked');
+      checkAuth();
+    });
+
+    // Run Auth check immediately
+    checkAuth();
+
+    // --- Main Generator Script ---
     const merchantNameInput = document.getElementById('merchantName');
     const terminalInput = document.getElementById('terminalInput');
     const amountInput = document.getElementById('amount');
