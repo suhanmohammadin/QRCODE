@@ -3,253 +3,315 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UPI QR Code Generator | Fast & Free Payment QR</title>
+  <title>PhonePay Generator | @SM</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- QRCode.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <style>
-    .color-picker-wrapper::-webkit-color-swatch-wrapper { padding: 0; }
-    .color-picker-wrapper::-webkit-color-swatch { border: none; border-radius: 0.375rem; }
-  </style>
+  <!-- Google Font for Hindi Character rendering -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
 
   <!-- Header Banner -->
-  <header class="text-center my-4">
-    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
-      UPI QR Code Generator
+  <header class="text-center my-4 w-full max-w-xl bg-emerald-600 py-4 px-6 rounded-2xl shadow-md text-white">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">
+      PhonePay QR Generator
     </h1>
-    <p class="text-gray-600 mt-2 text-sm md:text-base">
-      Generate instant, custom-styled payment QR codes for any UPI app.
+    <p class="text-emerald-100 mt-1 text-sm md:text-base">
+      by SUHAN
     </p>
   </header>
 
-  <!-- Main Generator Card -->
-  <main class="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-gray-100 my-auto">
-    
-    <!-- Left Panel: Form Controls -->
-    <div class="md:col-span-7 p-6 md:p-8 space-y-5">
-      <h2 class="text-xl font-bold text-gray-800 border-b pb-3">Payment Details</h2>
+  <!-- Main Generator Form Card -->
+  <main class="max-w-xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 my-auto p-6 md:p-8 space-y-5">
+    <h2 class="text-xl font-bold text-gray-800 border-b pb-3">Merchant Details</h2>
 
-      <form id="qrForm" class="space-y-4" onsubmit="return false;">
-        <!-- Payee Name -->
-        <div>
-          <label for="payeeName" class="block text-xs font-semibold uppercase text-gray-600 mb-1">
-            Payee / Business Name <span class="text-red-500">*</span>
-          </label>
-          <input type="text" id="payeeName" value="Suhan" placeholder="e.g. Suhan" required
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
-        </div>
-
-        <!-- UPI ID (Default set to 9133359954@axl) -->
-        <div>
-          <label for="upiId" class="block text-xs font-semibold uppercase text-gray-600 mb-1">
-            UPI ID / VPA <span class="text-red-500">*</span>
-          </label>
-          <input type="text" id="upiId" value="9133359954@axl" placeholder="e.g. 9133359954@axl" required
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
-        </div>
-
-        <!-- Amount & Remarks -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label for="amount" class="block text-xs font-semibold uppercase text-gray-600 mb-1">
-              Amount (₹) <span class="text-gray-400 font-normal">(Optional)</span>
-            </label>
-            <input type="number" id="amount" step="0.01" min="1" placeholder="e.g. 500"
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
-          </div>
-          <div>
-            <label for="remarks" class="block text-xs font-semibold uppercase text-gray-600 mb-1">
-              Remarks <span class="text-gray-400 font-normal">(Optional)</span>
-            </label>
-            <input type="text" id="remarks" placeholder="e.g. Payment"
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
-          </div>
-        </div>
-
-        <!-- Customization -->
-        <div class="pt-2">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Customization</h3>
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label for="qrColor" class="block text-xs font-medium text-gray-600 mb-1">QR Code Color</label>
-              <input type="color" id="qrColor" value="#000000" 
-                class="color-picker-wrapper w-full h-10 border border-gray-300 rounded-lg cursor-pointer" />
-            </div>
-            <div>
-              <label for="logoInput" class="block text-xs font-medium text-gray-600 mb-1">Center Logo (PNG/JPG)</label>
-              <input type="file" id="logoInput" accept="image/*"
-                class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
-            </div>
-          </div>
-        </div>
-
-        <!-- Action Button -->
-        <button type="button" id="generateBtn"
-          class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-200">
-          Generate QR Code
-        </button>
-      </form>
-    </div>
-
-    <!-- Right Panel: Preview & Download -->
-    <div class="md:col-span-5 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 md:p-8 flex flex-col items-center justify-center border-t md:border-t-0 md:border-l border-gray-200">
-      
-      <!-- Canvas / QR Container Frame -->
-      <div class="relative bg-white p-5 rounded-2xl shadow-md border border-gray-200 flex flex-col items-center justify-center">
-        
-        <!-- Target render div for QRCode.js -->
-        <div id="qrCodeWrapper" class="relative w-48 h-48 flex items-center justify-center">
-          <div id="placeholderText" class="text-xs text-gray-400 text-center px-4">
-            Fill in details and click <span class="font-semibold text-gray-600">Generate</span> to preview your UPI QR code.
-          </div>
-        </div>
-
-        <!-- Payee Display Name Badge -->
-        <div id="badgeContainer" class="hidden mt-3 text-center">
-          <p id="badgeName" class="text-xs font-bold text-gray-800 uppercase tracking-wide"></p>
-          <p id="badgeUpi" class="text-[10px] text-gray-500"></p>
-        </div>
+    <form id="qrForm" class="space-y-4" onsubmit="return false;">
+      <!-- Merchant Name -->
+      <div>
+        <label for="merchantName" class="block text-xs font-semibold uppercase text-gray-600 mb-1">
+          Merchant / Business Name <span class="text-red-500">*</span>
+        </label>
+        <input type="text" id="merchantName" value="PhonePay" placeholder="e.g. Suhan" required
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-600 outline-none transition" />
       </div>
 
-      <!-- Download Button -->
-      <button id="downloadBtn" disabled
-        class="mt-6 w-full max-w-xs bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold py-2.5 px-6 rounded-lg shadow transition duration-200 flex items-center justify-center gap-2">
-        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-          <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
-        </svg>
-        Download PNG
+      <!-- Terminal Digits with Refresh Button -->
+      <div>
+        <label for="terminalInput" class="block text-xs font-semibold uppercase text-gray-600 mb-1">
+          Terminal / (UPI ID) <span class="text-red-500">*</span>
+        </label>
+        <div class="flex gap-2">
+          <input type="text" id="terminalInput" value="" maxlength="9" placeholder="e.g. 913335995" required
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-600 outline-none transition" />
+          <button type="button" id="refreshBtn" title="Generate Random 9-Digit Number"
+            class="px-3.5 py-2.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-semibold rounded-lg transition flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
+        <p class="text-[10px] text-gray-400 mt-1">
+          VPA Payload: <span id="vpaPreview" class="font-mono text-emerald-600 font-semibold">Q... @ybl</span>
+        </p>
+      </div>
+
+      <!-- Optional Amount -->
+      <div>
+        <label for="amount" class="block text-xs font-semibold uppercase text-gray-600 mb-1">
+          Fixed Amount (₹) <span class="text-gray-400 font-normal">(Optional)</span>
+        </label>
+        <input type="number" id="amount" step="0.01" min="1" placeholder="Leave blank for dynamic input"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-600 outline-none transition" />
+      </div>
+
+      <!-- Hidden QR Target -->
+      <div id="rawQrWrapper" class="hidden"></div>
+
+      <!-- Generate Button -->
+      <button type="button" id="renderBtn"
+        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+        Generate QR
       </button>
-
-      <span class="text-[11px] text-gray-400 mt-4 text-center">
-        Compatible with Google Pay, PhonePe, Paytm, BHIM, and 60+ UPI apps.
-      </span>
-    </div>
-
+    </form>
   </main>
 
-  <!-- Bottom Copyright Footer -->
+  <!-- Modal Pop-Up Container -->
+  <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full flex flex-col items-center relative animate-in fade-in zoom-in duration-200">
+      
+      <!-- Close Button -->
+      <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Generated QR Standee</h3>
+
+      <!-- Canvas Display -->
+      <div class="bg-white p-3 rounded-2xl shadow-md border border-gray-200 flex flex-col items-center justify-center">
+        <canvas id="standeeCanvas" width="400" height="540" class="w-64 h-[345px] rounded-xl border border-gray-100 shadow-sm"></canvas>
+      </div>
+
+      <!-- Payload URI String Output (Hidden) -->
+      <div class="mt-2 w-full hidden">
+        <p id="rawUriOutput" class="text-[9px] font-mono text-gray-600 bg-white/80 p-2 rounded border border-gray-200 break-all text-center min-h-[36px] flex items-center justify-center">
+          -
+        </p>
+      </div>
+
+      <!-- Action Buttons Below Canvas -->
+      <div class="w-full mt-4 space-y-2">
+        <!-- Refresh Button Below QR -->
+        <button id="modalRefreshBtn"
+          class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-xs font-semibold py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Refresh Terminal & Update QR
+        </button>
+
+        <!-- Download Button -->
+        <button id="downloadBtn"
+          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2.5 px-4 rounded-lg shadow transition flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+            <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
+          </svg>
+          Download Standee PNG
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Copyright Footer -->
   <footer class="text-center my-4 text-xs text-gray-500">
     &copy; All rights reserved by SMGC PVT LTD
   </footer>
 
-  <!-- JavaScript Logic -->
+  <!-- Script Logic -->
   <script>
-    const payeeNameInput = document.getElementById('payeeName');
-    const upiIdInput = document.getElementById('upiId');
+    const merchantNameInput = document.getElementById('merchantName');
+    const terminalInput = document.getElementById('terminalInput');
     const amountInput = document.getElementById('amount');
-    const remarksInput = document.getElementById('remarks');
-    const qrColorInput = document.getElementById('qrColor');
-    const logoInput = document.getElementById('logoInput');
-
-    const generateBtn = document.getElementById('generateBtn');
+    const vpaPreview = document.getElementById('vpaPreview');
+    const rawUriOutput = document.getElementById('rawUriOutput');
+    
+    const refreshBtn = document.getElementById('refreshBtn');
+    const modalRefreshBtn = document.getElementById('modalRefreshBtn');
+    const renderBtn = document.getElementById('renderBtn');
     const downloadBtn = document.getElementById('downloadBtn');
-    const qrCodeWrapper = document.getElementById('qrCodeWrapper');
-    const badgeContainer = document.getElementById('badgeContainer');
-    const badgeName = document.getElementById('badgeName');
-    const badgeUpi = document.getElementById('badgeUpi');
+    const rawQrWrapper = document.getElementById('rawQrWrapper');
+    const canvas = document.getElementById('standeeCanvas');
+    const ctx = canvas.getContext('2d');
 
-    let customLogoImg = null;
+    const qrModal = document.getElementById('qrModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
 
-    // Handle center logo upload
-    logoInput.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          const img = new Image();
-          img.onload = function() {
-            customLogoImg = img;
-          };
-          img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-      } else {
-        customLogoImg = null;
+    // Generate a random 9-digit string
+    function generateRandom9Digits() {
+      return Math.floor(100000000 + Math.random() * 900000000).toString();
+    }
+
+    // Extract only digits and enforce a maximum length of 9
+    function getDigits() {
+      const cleanDigits = terminalInput.value.replace(/\D/g, '').slice(0, 9);
+      return cleanDigits || '...';
+    }
+
+    function getVpa() {
+      return `Q${getDigits()}@ybl`;
+    }
+
+    // Generate random number action
+    function updateTerminalWithRandom() {
+      terminalInput.value = generateRandom9Digits();
+      vpaPreview.textContent = getVpa();
+      drawStandee();
+    }
+
+    // Refresh button event listeners
+    refreshBtn.addEventListener('click', updateTerminalWithRandom);
+    modalRefreshBtn.addEventListener('click', updateTerminalWithRandom);
+
+    // Input listener to restrict non-digit input and cap at 9 digits
+    terminalInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 9);
+      vpaPreview.textContent = getVpa();
+    });
+
+    function drawStandee() {
+      const merchant = merchantNameInput.value.trim() || 'PhonePay';
+      const digits = getDigits();
+      const vpa = getVpa();
+      const amount = amountInput.value.trim();
+
+      // Clean payload
+      let upiUri = `upi://pay?pa=${vpa}` +
+                   `&pn=${encodeURIComponent(merchant)}` +
+                   `&mc=0000` +
+                   `&mode=02` +
+                   `&purpose=00` +
+                   `&tr=${digits}` +
+                   `&cu=INR`;
+
+      if (amount) {
+        upiUri += `&am=${encodeURIComponent(amount)}`;
+      }
+
+      rawUriOutput.textContent = upiUri;
+
+      rawQrWrapper.innerHTML = '';
+      new QRCode(rawQrWrapper, {
+        text: upiUri,
+        width: 280,
+        height: 280,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      setTimeout(() => {
+        const qrSourceCanvas = rawQrWrapper.querySelector('canvas');
+        if (!qrSourceCanvas) return;
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Header: Purple Circle Icon
+        ctx.fillStyle = "#5f259f";
+        ctx.beginPath();
+        ctx.arc(200, 50, 28, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // White "पे" character
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 30px 'Noto Sans', sans-serif, system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("पे", 200, 50);
+
+        // Brand Name Text
+        ctx.fillStyle = "#5f259f";
+        ctx.font = "bold 32px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("PhonePay", 200, 102);
+
+        // Orange Name Badge Pill
+        const pillWidth = 220;
+        const pillHeight = 44;
+        const pillX = (canvas.width - pillWidth) / 2;
+        const pillY = 126;
+        const radius = 22;
+
+        ctx.fillStyle = "#eb7c28";
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(pillX, pillY, pillWidth, pillHeight, radius);
+        } else {
+          ctx.rect(pillX, pillY, pillWidth, pillHeight);
+        }
+        ctx.fill();
+
+        ctx.fillStyle = "#000000";
+        ctx.font = "bold 17px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(merchant, 200, pillY + 26);
+
+        // QR Code Matrix
+        ctx.drawImage(qrSourceCanvas, 60, 182, 280, 280);
+
+        // Footer BHIM UPI Branding
+        ctx.fillStyle = "#000000";
+        ctx.font = "italic bold 18px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("BHIM  |  UPI", 200, 488);
+
+        ctx.fillStyle = "#666666";
+        ctx.font = "9px sans-serif";
+        ctx.fillText("BHARAT INTERFACE FOR MONEY     UNIFIED PAYMENTS INTERFACE", 200, 500);
+
+        // Terminal Number Label
+        ctx.fillStyle = "#000000";
+        ctx.font = "bold 13px sans-serif";
+        ctx.fillText(`Terminal 1-Q${digits}`, 200, 522);
+
+      }, 100);
+    }
+
+    // Modal Control Logic
+    renderBtn.addEventListener('click', () => {
+      drawStandee();
+      qrModal.classList.remove('hidden');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      qrModal.classList.add('hidden');
+    });
+
+    // Close modal when clicking outside content area
+    qrModal.addEventListener('click', (e) => {
+      if (e.target === qrModal) {
+        qrModal.classList.add('hidden');
       }
     });
 
-    // Generate QR Code Function
-    function generateQR() {
-      const name = payeeNameInput.value.trim();
-      const upi = upiIdInput.value.trim();
-      const amount = amountInput.value.trim();
-      const remarks = remarksInput.value.trim();
-      const qrColor = qrColorInput.value;
-
-      if (!name || !upi) {
-        alert("Please enter both Payee Name and UPI ID.");
-        return;
-      }
-
-      // 1. Construct Standard UPI Deep-Link
-      let upiUri = `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&cu=INR`;
-      if (amount) upiUri += `&am=${encodeURIComponent(amount)}`;
-      if (remarks) upiUri += `&tn=${encodeURIComponent(remarks)}`;
-
-      // 2. Clear previous content
-      qrCodeWrapper.innerHTML = '';
-
-      // 3. Render base QR code into wrapper
-      const qrInstance = new QRCode(qrCodeWrapper, {
-        text: upiUri,
-        width: 192,
-        height: 192,
-        colorDark: qrColor,
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-      });
-
-      // 4. Update preview badge
-      badgeName.textContent = name;
-      badgeUpi.textContent = upi;
-      badgeContainer.classList.remove('hidden');
-
-      // 5. Overlay center logo if provided
-      setTimeout(() => {
-        const canvas = qrCodeWrapper.querySelector('canvas');
-        if (canvas && customLogoImg) {
-          const ctx = canvas.getContext('2d');
-          const logoSize = 40;
-          const x = (canvas.width - logoSize) / 2;
-          const y = (canvas.height - logoSize) / 2;
-
-          ctx.fillStyle = "#ffffff";
-          ctx.beginPath();
-          ctx.arc(canvas.width / 2, canvas.height / 2, (logoSize / 2) + 2, 0, 2 * Math.PI);
-          ctx.fill();
-
-          ctx.drawImage(customLogoImg, x, y, logoSize, logoSize);
-        }
-
-        downloadBtn.removeAttribute('disabled');
-      }, 50);
-    }
-
-    generateBtn.addEventListener('click', generateQR);
+    // Initialize initial random ID on load
+    document.fonts.ready.then(() => {
+      terminalInput.value = generateRandom9Digits();
+      vpaPreview.textContent = getVpa();
+    });
 
     // Download PNG Action
     downloadBtn.addEventListener('click', function() {
-      const canvas = qrCodeWrapper.querySelector('canvas');
-      const img = qrCodeWrapper.querySelector('img');
-
-      let dataUrl = '';
-      if (canvas) {
-        dataUrl = canvas.toDataURL("image/png");
-      } else if (img) {
-        dataUrl = img.src;
-      }
-
-      if (dataUrl) {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = `UPI-QR-${payeeNameInput.value.replace(/\s+/g, '_')}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL("image/png");
+      link.download = `PhonePay-Standee-${merchantNameInput.value.replace(/\s+/g, '_')}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     });
   </script>
 </body>
