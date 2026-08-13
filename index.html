@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-5188217885189630">
+
   <title>PhonePay Generator | @SM</title>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <!-- QRCode.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
   <!-- Google Font for Hindi Character rendering -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
 
   <!-- Splash / Welcome Screen Overlay -->
@@ -207,7 +213,7 @@
           welcomeScreen.remove();
           checkAuth();
         }, 500);
-      }, 1500); // Displays splash screen for 1.5 seconds
+      }, 1500);
     });
 
     // --- PIN Verification Logic ---
@@ -247,6 +253,7 @@
     }
 
     submitPinBtn.addEventListener('click', validatePin);
+
     pinInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') validatePin();
     });
@@ -263,12 +270,18 @@
 
       const hours = now.getHours();
       let greeting = "Welcome back!";
-      if (hours < 12) greeting = "Good Morning!";
-      else if (hours < 17) greeting = "Good Afternoon!";
-      else greeting = "Good Evening!";
+
+      if (hours < 12) {
+        greeting = "Good Morning!";
+      } else if (hours < 17) {
+        greeting = "Good Afternoon!";
+      } else {
+        greeting = "Good Evening!";
+      }
       
       document.getElementById('funGreeting').textContent = greeting;
     }
+
     setInterval(updateClockAndGreeting, 1000);
     updateClockAndGreeting();
 
@@ -356,6 +369,7 @@
       rawUriOutput.textContent = upiUri;
 
       rawQrWrapper.innerHTML = '';
+
       new QRCode(rawQrWrapper, {
         text: upiUri,
         width: 280,
@@ -367,6 +381,7 @@
 
       setTimeout(() => {
         const qrSourceCanvas = rawQrWrapper.querySelector('canvas');
+
         if (!qrSourceCanvas) return;
 
         ctx.fillStyle = "#ffffff";
@@ -400,11 +415,13 @@
 
         ctx.fillStyle = "#eb7c28";
         ctx.beginPath();
+
         if (ctx.roundRect) {
           ctx.roundRect(pillX, pillY, pillWidth, pillHeight, radius);
         } else {
           ctx.rect(pillX, pillY, pillWidth, pillHeight);
         }
+
         ctx.fill();
 
         ctx.fillStyle = "#000000";
